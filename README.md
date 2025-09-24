@@ -110,7 +110,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/rahmatnurfauzi/laravel-pro-boilerplate.git your-project-name
+   git clone git@github.com:rahmathidayat1203/project_boilerplate_laravel.git your-project-name
    cd your-project-name
    ```
 
@@ -162,7 +162,7 @@ For a faster setup, you can use this script:
 
 ```bash
 # Run these commands in sequence
-git clone https://github.com/rahmatnurfauzi/laravel-pro-boilerplate.git && \
+git clone git@github.com:rahmathidayat1203/project_boilerplate_laravel.git && \
 cd laravel-pro-boilerplate && \
 composer install && \
 npm install && \
@@ -438,7 +438,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ```
 MIT License
 
-Copyright (c) 2025 Rahmat Nurfauzi
+Copyright (c) 2025 Rahmat Hidayat
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -479,7 +479,7 @@ If you encounter any issues or have questions:
 1. 📚 **Check the documentation** above
 2. 🔍 **Search existing issues** on GitHub
 3. ❓ **Create a new issue** with detailed information
-4. 📨 **Contact the maintainer** at [rahmatnurfauzi@gmail.com]
+4. 📨 **Contact the maintainer** at [rh63800@gmail.com]
 
 ---
 
@@ -487,8 +487,4 @@ If you encounter any issues or have questions:
   <p>⭐ If you find this boilerplate useful, please consider starring the repository!</p>
   
   <p>Made with ❤️ by developers, for developers</p>
-  
-  <a href="https://github.com/rahmatnurfauzi/laravel-pro-boilerplate/stargazers">
-    <img src="https://img.shields.io/github/stars/rahmatnurfauzi/laravel-pro-boilerplate?style=social" alt="GitHub Stars">
-  </a>
 </div>
