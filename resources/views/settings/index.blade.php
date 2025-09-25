@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.adminlte')
 
 @section('content')
 <div class="container-fluid">
@@ -30,9 +30,9 @@
                                     <td>{{ $setting->value }}</td>
                                     <td>{{ $setting->type }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editSettingModal{{ $setting->id }}">
+                                        <a href="{{ route('settings.edit', $setting->id) }}" class="btn btn-info btn-sm">
                                             Edit
-                                        </button>
+                                        </a>
                                         <form method="POST" action="{{ route('settings.destroy', $setting->id) }}" style="display:inline">
                                             @csrf
                                             @method('DELETE')
@@ -50,35 +50,4 @@
     </div>
 </div>
 
-<!-- Edit Setting Modals -->
-@foreach ($settings as $setting)
-<div class="modal fade" id="editSettingModal{{ $setting->id }}" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit Setting</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <form method="POST" action="{{ route('settings.update', $setting->id) }}">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="key" class="form-label">Key</label>
-                        <input type="text" class="form-control" value="{{ $setting->key }}" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <label for="value" class="form-label">Value</label>
-                        <input type="text" name="value" class="form-control" value="{{ $setting->value }}">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
 @endsection

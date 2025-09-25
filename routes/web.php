@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
     
     // Settings management routes
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::get('/settings/{setting}/edit', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings/{setting}', [SettingController::class, 'update'])->name('settings.update');
     Route::delete('/settings/{setting}', [SettingController::class, 'destroy'])->name('settings.destroy');
 });
