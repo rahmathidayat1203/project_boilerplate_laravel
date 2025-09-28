@@ -71,7 +71,231 @@ class InstallUiTheme extends Command
     private function installArgon()
     {
         $this->info('Installing Argon Dashboard...');
-        $this->warn('Argon integration is not yet implemented.');
+
+        $this->info('Updating package.json for Argon...');
+        $this->updatePackageJsonForArgon();
+
+        $this->info('Updating vite.config.js for Argon...');
+        $this->updateViteConfigForArgon();
+
+        $this->info('Creating asset files for Argon...');
+        $this->createAssetFilesForArgon();
+
+        $this->info('Creating layout file for Argon...');
+        $this->createLayoutFileForArgon();
+
+        $this->info('Updating view files to use Argon layout...');
+        $this->updateBladeFiles('argon');
+
+        $this->info('Argon Dashboard installed successfully.');
+        $this->comment('Please run "npm install && npm run dev" to compile the assets.');
+    }
+
+    private function updatePackageJsonForArgon()
+    {
+        $packageJsonPath = base_path('package.json');
+        $packageJson = json_decode(file_get_contents($packageJsonPath), true);
+
+        $packageJson['devDependencies']['@creative-tim-official/argon-dashboard-free'] = 'latest';
+
+        file_put_contents($packageJsonPath, json_encode($packageJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+    }
+
+    private function updateViteConfigForArgon()
+    {
+        $viteConfigPath = base_path('vite.config.js');
+        $viteConfigContent = "import { defineConfig } from 'vite';\n";
+        $viteConfigContent .= "import laravel from 'laravel-vite-plugin';\n";
+        $viteConfigContent .= "import tailwindcss from '@tailwindcss/vite';\n\n";
+        $viteConfigContent .= "export default defineConfig({\n";
+        $viteConfigContent .= "    plugins: [\n";
+        $viteConfigContent .= "        laravel({\n";
+        $viteConfigContent .= "            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/argon.css', 'resources/js/argon.js'],\n";
+        $viteConfigContent .= "            refresh: true,\n";
+        $viteConfigContent .= "        }),\n";
+        $viteConfigContent .= "        tailwindcss(),\n";
+        $viteConfigContent .= "    ],\n";
+        $viteConfigContent .= "});\n";
+
+        file_put_contents($viteConfigPath, $viteConfigContent);
+    }
+
+    private function createAssetFilesForArgon()
+    {
+        // Argon CSS
+        $argonCssPath = resource_path('css/argon.css');
+        $argonCssContent = "/* Import Argon Dashboard css */\n@import '@creative-tim-official/argon-dashboard-free/assets/css/argon-dashboard.css';\n";
+        file_put_contents($argonCssPath, $argonCssContent);
+
+        // Argon JS
+        $argonJsPath = resource_path('js/argon.js');
+        $argonJsContent = "import '@creative-tim-official/argon-dashboard-free/assets/js/argon-dashboard.js';\n";
+        file_put_contents($argonJsPath, $argonJsContent);
+    }
+
+    private function createLayoutFileForArgon()
+    {
+        $layoutPath = resource_path('views/layouts/argon.blade.php');
+        File::ensureDirectoryExists(dirname($layoutPath));
+        file_put_contents($layoutPath, $this->getArgonLayoutContent());
+    }
+
+    private function getArgonLayoutContent()
+    {
+        return <<<'HTML'
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $appName ?? config('app.name', 'Laravel') }}</title>
+
+    @vite(['resources/css/argon.css', 'resources/js/argon.js'])
+</head>
+<body class="g-sidenav-show bg-gray-100">
+  <div class="min-height-300 bg-primary position-absolute w-100"></div>
+  <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 " id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="{{ route('dashboard') }}">
+        <span class="ms-1 font-weight-bold">{{ $appName ?? config('app.name', 'Laravel') }}</span>
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        @can('user-list')
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-circle-08 text-warning text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Users</span>
+          </a>
+        </li>
+        @endcan
+        @can('role-list')
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-badge text-success text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Roles</span>
+          </a>
+        </li>
+        @endcan
+        @can('role-list')
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}" href="{{ route('permissions.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-key-25 text-info text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Permissions</span>
+          </a>
+        </li>
+        @endcan
+        <li class="nav-item">
+          <a class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}" href="{{ route('settings.index') }}">
+            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="ni ni-settings-gear-65 text-danger text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content position-relative border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dashboard</li>
+          </ol>
+          <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
+        </nav>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+          <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+          </div>
+          <ul class="navbar-nav  justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+                <a href="{{ route('profile.show') }}" class="nav-link text-white font-weight-bold px-0">
+                    <i class="fa fa-user me-sm-1"></i>
+                    <span class="d-sm-inline d-none">{{ Auth::user()->name }}</span>
+                </a>
+            </li>
+            <li class="nav-item px-3 d-flex align-items-center">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a href="{{ route('logout') }}" class="nav-link text-white p-0"
+                       onclick="event.preventDefault(); this.closest('form').submit();">
+                        <i class="fa fa-sign-out me-sm-1"></i>
+                        <span class="d-sm-inline d-none">Log Out</span>
+                    </a>
+                </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+      @yield('content')
+      
+      <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-6 mb-lg-0 mb-4">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>, made with <i class="fa fa-heart"></i> by
+                <a href="#" class="font-weight-bold">{{ $appName ?? config('app.name', 'Laravel') }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+</body>
+</html>
+HTML;
     }
 
     private function updatePackageJson()
@@ -308,7 +532,7 @@ class InstallUiTheme extends Command
 HTML;
     }
 
-    private function updateBladeFiles()
+    private function updateBladeFiles($theme = 'adminlte')
     {
         $this->info('Updating Blade files...');
 
@@ -331,7 +555,7 @@ HTML;
             $path = resource_path('views/' . $view);
             if (File::exists($path)) {
                 $content = File::get($path);
-                $content = str_replace("@extends('layouts.app')", "@extends('layouts.adminlte')", $content);
+                $content = preg_replace("/@extends\(\'layouts\.(app|adminlte|argon)\'\)/", "@extends('layouts.{$theme}')", $content);
                 File::put($path, $content);
                 $this->line("  Updated {$view}");
             }

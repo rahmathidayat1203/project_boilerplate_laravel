@@ -183,6 +183,16 @@ After running the theme installer, make sure to compile the assets:
 npm install && npm run dev
 ```
 
+###  switching UI Themes
+
+This boilerplate supports both AdminLTE and Argon themes. You can switch between them by running the `install:ui-theme` command and selecting your desired theme. 
+
+**Important:** After switching themes, you must reinstall the npm dependencies and recompile the assets for the new theme to be applied correctly.
+
+```bash
+npm install && npm run dev
+```
+
 ### 🛠️ One-Command Setup
 For a faster setup, you can use this script:
 
