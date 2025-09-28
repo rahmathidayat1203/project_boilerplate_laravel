@@ -95,7 +95,7 @@
 Before you begin, ensure you have the following installed:
 
 | Requirement | Version |
-|-------------|---------|
+|-------------|--------|
 | 🐘 PHP | 8.2+ |
 | 🧰 Composer | Latest |
 | 🗄️ MySQL/PostgreSQL | Latest |
@@ -104,7 +104,100 @@ Before you begin, ensure you have the following installed:
 
 > **Note:** Make sure you have all necessary PHP extensions enabled (BCMath, Ctype, cURL, DOM, Fileinfo, JSON, Mbstring, OpenSSL, PCRE, PDO, Tokenizer, XML).
 
-## 🚀 Installation\n\n### Quick Start\n\n1. **Clone the repository**\n   ```bash\n   git clone git@github.com:rahmathidayat1203/project_boilerplate_laravel.git your-project-name\n   cd your-project-name\n   ```\n\n2. **Install dependencies**\n   ```bash\n   composer install\n   npm install\n   ```\n\n3. **Configure environment**\n   ```bash\n   cp .env.example .env\n   php artisan key:generate\n   ```\n\n4. **Configure database**\n   ```env\n   DB_CONNECTION=mysql\n   DB_HOST=127.0.0.1\n   DB_PORT=3306\n   DB_DATABASE=your_database_name\n   DB_USERNAME=your_username\n   DB_PASSWORD=your_password\n   ```\n\n5. **Run database migrations**\n   ```bash\n   php artisan migrate --seed\n   ```\n\n6. **Compile assets**\n   ```bash\n   npm run dev\n   # or for production\n   npm run build\n   ```\n\n7. **Start development server**\n   ```bash\n   php artisan serve\n   ```\n\n8. **Access your application**\n   - Visit `http://localhost:8000`\n   - Login with: `admin@example.com` / `password`\n\n### 🎨 UI Theme Installation (Optional)\nThis boilerplate comes with an AdminLTE theme installer. If you need to install or reinstall the AdminLTE theme, you can use the following command:\n\n```bash\nphp artisan install:ui-theme\n```\n\nThis command will:\n- Install AdminLTE 3.2 as the UI theme\n- Update package.json with necessary dependencies\n- Configure Vite for asset compilation\n- Update Tailwind CSS configuration\n- Create necessary asset files (adminlte.css, adminlte.js)\n- Create the AdminLTE layout file\n- Update all existing Blade files to use the new layout\n\nAfter running the theme installer, make sure to compile the assets:\n```bash\nnpm install && npm run dev\n```\n\n### 🛠️ One-Command Setup\nFor a faster setup, you can use this script:\n\n```bash\n# Run these commands in sequence\ngit clone git@github.com:rahmathidayat1203/project_boilerplate_laravel.git && \\\ncd laravel-pro-boilerplate && \\\ncomposer install && \\\nnpm install && \\\ncp .env.example .env && \\\nphp artisan key:generate && \\\nphp artisan migrate --seed && \\\nnpm run dev\n```
+## 🚀 Installation
+
+### Quick Start
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/rahmatnurfauzi/laravel-pro-boilerplate.git your-project-name
+    cd your-project-name
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    composer install
+    npm install
+    ```
+
+3.  **Configure environment**
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+
+4.  **Configure database**
+
+    Open the `.env` file and set your database credentials:
+
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database_name
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+    ```
+
+5.  **Run database migrations and seeders**
+    ```bash
+    php artisan migrate --seed
+    ```
+
+6.  **Compile assets**
+    ```bash
+    # For development
+    npm run dev
+
+    # For production
+    npm run build
+    ```
+
+7.  **Start development server**
+    ```bash
+    php artisan serve
+    ```
+
+8.  **Access your application**
+    - Visit `http://localhost:8000`
+    - Login with: `admin@example.com` / `password`
+
+### 🎨 UI Theme Installation (Optional)
+This boilerplate comes with an AdminLTE theme installer. If you need to install or reinstall the AdminLTE theme, you can use the following command:
+
+```bash
+php artisan install:ui-theme
+```
+
+This command will:
+- Install AdminLTE 3.2 as the UI theme
+- Update package.json with necessary dependencies
+- Configure Vite for asset compilation
+- Update Tailwind CSS configuration
+- Create necessary asset files (adminlte.css, adminlte.js)
+- Create the AdminLTE layout file
+- Update all existing Blade files to use the new layout
+
+After running the theme installer, make sure to compile the assets:
+```bash
+npm install && npm run dev
+```
+
+### 🛠️ One-Command Setup
+For a faster setup, you can use this script:
+
+```bash
+# Run these commands in sequence
+git clone https://github.com/rahmatnurfauzi/laravel-pro-boilerplate.git && \
+cd laravel-pro-boilerplate && \
+composer install && \
+npm install && \
+cp .env.example .env && \
+php artisan key:generate && \
+# Update .env with your DB credentials here
+php artisan migrate --seed && \
+npm run dev
+```
 
 ## 🔐 Authentication & Authorization
 
@@ -253,7 +346,7 @@ class Api\UserController extends Controller
     {
         return generateApiResponse(
             true, 
-            'Users retrieved successfully', 
+            'Users retrieved successfully',
             User::all()
         );
     }
