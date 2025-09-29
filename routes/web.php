@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/{setting}/edit', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings/{setting}', [SettingController::class, 'update'])->name('settings.update');
     Route::delete('/settings/{setting}', [SettingController::class, 'destroy'])->name('settings.destroy');
+
+    // Menu management routes
+    Route::resource('menus', \App\Http\Controllers\MenuController::class)->middleware('can:manage-menus');
 });
 
 // Home route

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\View\Composers\MenuComposer;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
@@ -30,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
         } catch (\Exception $e) {
             View::share('appName', config('app.name'));
         }
+
+        // Register the Menu Composer for both sidebars
+        View::composer(['layouts.partials.sidebar-adminlte', 'layouts.partials.sidebar-argon'], MenuComposer::class);
     }
 }

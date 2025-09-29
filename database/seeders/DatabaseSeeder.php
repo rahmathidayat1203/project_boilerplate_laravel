@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         
         $this->call([
             PermissionSeeder::class,
+            MenuSeeder::class, // Add MenuSeeder here
             SuperAdminSeeder::class,
             AdminUserSeeder::class,
             SettingsSeeder::class,

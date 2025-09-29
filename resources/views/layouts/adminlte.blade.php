@@ -56,56 +56,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    @can('user-list')
-                    <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Users</p>
-                        </a>
-                    </li>
-                    @endcan
-                    @can('role-list')
-                    <li class="nav-item">
-                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-tag"></i>
-                            <p>Roles</p>
-                        </a>
-                    </li>
-                    @endcan
-                    @can('role-list')
-                    <li class="nav-item">
-                        <a href="{{ route('permissions.index') }}" class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-key"></i>
-                            <p>Permissions</p>
-                        </a>
-                    </li>
-                    @endcan
-                    <li class="nav-item">
-                        <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a href="{{ route('logout') }}" class="nav-link"
-                               onclick="event.preventDefault(); this.closest('form').submit();">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>Log Out</p>
-                            </a>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
+            @include('layouts.partials.sidebar-adminlte')
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->

@@ -162,67 +162,7 @@ class InstallUiTheme extends Command
       </a>
     </div>
     <hr class="horizontal dark mt-0">
-    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
-          </a>
-        </li>
-        @can('user-list')
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-circle-08 text-warning text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Users</span>
-          </a>
-        </li>
-        @endcan
-        @can('role-list')
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}" href="{{ route('roles.index') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-badge text-success text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Roles</span>
-          </a>
-        </li>
-        @endcan
-        @can('role-list')
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}" href="{{ route('permissions.index') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-key-25 text-info text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Permissions</span>
-          </a>
-        </li>
-        @endcan
-        <li class="nav-item">
-          <a class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}" href="{{ route('settings.index') }}">
-            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="ni ni-settings-gear-65 text-danger text-sm opacity-10"></i>
-            </div>
-            <span class="nav-link-text ms-1">Settings</span>
-          </a>
-        </li>
-        <li class="nav-item">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
-                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="ni ni-button-power text-dark text-sm opacity-10"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Log Out</span>
-                </a>
-            </form>
-        </li>
-      </ul>
-    </div>
+    @include('layouts.partials.sidebar-argon')
   </aside>
   <main class="main-content position-relative border-radius-lg ">
     <!-- Navbar -->
@@ -349,8 +289,7 @@ HTML;
 ";
         $tailwindConfigContent .= "    },\n\n";
         $tailwindConfigContent .= "    plugins: [],\n";
-        $tailwindConfigContent .= "};
-";
+        $tailwindConfigContent .= "};\n";
 
         file_put_contents($tailwindConfigPath, $tailwindConfigContent);
     }
@@ -436,56 +375,7 @@ HTML;
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar Menu -->
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    @can('user-list')
-                    <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Users</p>
-                        </a>
-                    </li>
-                    @endcan
-                    @can('role-list')
-                    <li class="nav-item">
-                        <a href="{{ route('roles.index') }}" class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-user-tag"></i>
-                            <p>Roles</p>
-                        </a>
-                    </li>
-                    @endcan
-                    @can('role-list')
-                    <li class="nav-item">
-                        <a href="{{ route('permissions.index') }}" class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-key"></i>
-                            <p>Permissions</p>
-                        </a>
-                    </li>
-                    @endcan
-                    <li class="nav-item">
-                        <a href="{{ route('settings.index') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
-                            <i class="nav-icon fas fa-cogs"></i>
-                            <p>Settings</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a href="{{ route('logout') }}" class="nav-link"
-                               onclick="event.preventDefault(); this.closest('form').submit();">
-                                <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>Log Out</p>
-                            </a>
-                        </form>
-                    </li>
-                </ul>
-            </nav>
+            @include('layouts.partials.sidebar-adminlte')
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
@@ -564,6 +454,9 @@ HTML;
             'settings/index.blade.php',
             'users/edit.blade.php',
             'users/index.blade.php',
+            'menus/index.blade.php',
+            'menus/create.blade.php',
+            'menus/edit.blade.php',
         ];
 
         foreach ($views as $view) {
