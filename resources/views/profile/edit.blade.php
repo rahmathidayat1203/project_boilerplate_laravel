@@ -1,4 +1,4 @@
-@extends('layouts.argon')
+@extends('layouts.adminlte')
 
 @section('content')
 <div class="row">

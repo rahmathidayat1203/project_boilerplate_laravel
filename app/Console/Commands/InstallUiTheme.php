@@ -110,7 +110,7 @@ class InstallUiTheme extends Command
         $viteConfigContent .= "export default defineConfig({\n";
         $viteConfigContent .= "    plugins: [\n";
         $viteConfigContent .= "        laravel({\n";
-        $viteConfigContent .= "            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/argon.css', 'resources/js/argon.js'],\n";
+        $viteConfigContent .= "            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/argon.css', 'resources/js/argon.js', 'resources/css/datatables.css', 'resources/js/datatables.js'],\n";
         $viteConfigContent .= "            refresh: true,\n";
         $viteConfigContent .= "        }),\n";
         $viteConfigContent .= "        tailwindcss(),\n";
@@ -150,7 +150,7 @@ class InstallUiTheme extends Command
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ $appName ?? config('app.name', 'Laravel') }}</title>
 
-    @vite(['resources/css/argon.css', 'resources/js/argon.js'])
+    @vite(['resources/css/argon.css', 'resources/js/argon.js', 'resources/css/datatables.css'])
 </head>
 <body class="g-sidenav-show bg-gray-100">
   <div class="min-height-300 bg-primary position-absolute w-100"></div>
@@ -210,6 +210,17 @@ class InstallUiTheme extends Command
             <span class="nav-link-text ms-1">Settings</span>
           </a>
         </li>
+        <li class="nav-item">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">
+                    <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="ni ni-button-power text-dark text-sm opacity-10"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Log Out</span>
+                </a>
+            </form>
+        </li>
       </ul>
     </div>
   </aside>
@@ -233,16 +244,6 @@ class InstallUiTheme extends Command
                     <i class="fa fa-user me-sm-1"></i>
                     <span class="d-sm-inline d-none">{{ Auth::user()->name }}</span>
                 </a>
-            </li>
-            <li class="nav-item px-3 d-flex align-items-center">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <a href="{{ route('logout') }}" class="nav-link text-white p-0"
-                       onclick="event.preventDefault(); this.closest('form').submit();">
-                        <i class="fa fa-sign-out me-sm-1"></i>
-                        <span class="d-sm-inline d-none">Log Out</span>
-                    </a>
-                </form>
             </li>
           </ul>
         </div>
@@ -293,6 +294,8 @@ class InstallUiTheme extends Command
       </footer>
     </div>
   </main>
+  @vite(['resources/js/datatables.js'])
+  @stack('scripts')
 </body>
 </html>
 HTML;
@@ -321,7 +324,7 @@ HTML;
         $viteConfigContent .= "export default defineConfig({\n";
         $viteConfigContent .= "    plugins: [\n";
         $viteConfigContent .= "        laravel({\n";
-        $viteConfigContent .= "            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/adminlte.css', 'resources/js/adminlte.js'],\n";
+        $viteConfigContent .= "            input: ['resources/css/app.css', 'resources/js/app.js', 'resources/css/adminlte.css', 'resources/js/adminlte.js', 'resources/css/datatables.css', 'resources/js/datatables.js'],\n";
         $viteConfigContent .= "            refresh: true,\n";
         $viteConfigContent .= "        }),\n";
         $viteConfigContent .= "        tailwindcss(),\n";
@@ -385,7 +388,7 @@ HTML;
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     
-    @vite(['resources/css/adminlte.css', 'resources/js/adminlte.js'])
+    @vite(['resources/css/adminlte.css', 'resources/css/datatables.css'])
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -471,6 +474,16 @@ HTML;
                             <p>Settings</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a href="{{ route('logout') }}" class="nav-link"
+                               onclick="event.preventDefault(); this.closest('form').submit();">
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Log Out</p>
+                            </a>
+                        </form>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -527,6 +540,8 @@ HTML;
     </footer>
 </div>
 <!-- ./wrapper -->
+@vite(['resources/js/adminlte.js', 'resources/js/datatables.js'])
+@stack('scripts')
 </body>
 </html>
 HTML;
@@ -555,7 +570,7 @@ HTML;
             $path = resource_path('views/' . $view);
             if (File::exists($path)) {
                 $content = File::get($path);
-                $content = preg_replace("/@extends\(\'layouts\.(app|adminlte|argon)\'\)/", "@extends('layouts.{$theme}')", $content);
+                $content = preg_replace("/@extends\('layouts\.(app|adminlte|argon)'\)/", "@extends('layouts.{$theme}')", $content);
                 File::put($path, $content);
                 $this->line("  Updated {$view}");
             }

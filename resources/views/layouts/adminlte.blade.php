@@ -8,7 +8,7 @@
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     
-    @vite(['resources/css/adminlte.css'])
+    @vite(['resources/css/adminlte.css', 'resources/css/datatables.css'])
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -32,6 +32,14 @@
                     <a href="{{ route('profile.show') }}" class="dropdown-item">
                         Profile
                     </a>
+                    <div class="dropdown-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}" class="dropdown-item"
+                           onclick="event.preventDefault(); this.closest('form').submit();">
+                            Log Out
+                        </a>
+                    </form>
                 </div>
             </li>
         </ul>
@@ -152,7 +160,7 @@
     </footer>
 </div>
 <!-- ./wrapper -->
-@vite(['resources/js/jquery.js', 'resources/js/adminlte.js'])
+@vite(['resources/js/adminlte.js', 'resources/js/datatables.js'])
 @stack('scripts')
 </body>
 </html>
